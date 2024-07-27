@@ -15,16 +15,35 @@ namespace Bulky.DataAccess.Repository
             Dbset = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? include = null)
         {
             IQueryable<T> query = Dbset;
+            if (!string.IsNullOrEmpty(include))
+            {
+                foreach (
+                    var includeProp in include.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                )
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+
             return query.ToList();
         }
 
-        public T? GetOne(Expression<Func<T, bool>> filter)
+        public T? GetOne(Expression<Func<T, bool>> filter, string? include = null)
         {
             IQueryable<T> query = Dbset;
             query = query.Where(filter);
+            if (!string.IsNullOrEmpty(include))
+            {
+                foreach (
+                    var includeProp in include.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                )
+                {
+                    query = query.Include(includeProp);
+                }
+            }
             return query.FirstOrDefault();
         }
 

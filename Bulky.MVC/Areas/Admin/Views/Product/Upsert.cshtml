@@ -1,0 +1,112 @@
+﻿@model ProductVM
+
+<div class="card shadow my-5 border-0">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2"> @(Model.Product.Id != 0 ? "Update" : "Create New") Product</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input hidden asp-for="Product.Id"/>
+            <input hidden asp-for="Product.ImageUrl"/>
+
+            <div class="row">
+                <div class="col-10">
+                    <div class="p-3">
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.Title" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.Title" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.Title" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.Author" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.Author" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.Author" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12">
+                            <label asp-for="Product.Description" class="text-secondary ms-2"></label>
+                            <textarea asp-for="Product.Description" class="form-control border-0 shadow"></textarea>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.ISBN" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.ISBN" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.ListPrice" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.ListPrice" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.Price" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.Price" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.Price50" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.Price50" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.Price100" class="text-secondary p-0 ms-2"></label>
+                            <input asp-for="Product.Price100" class="form-control border-0 shadow" />
+                            <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.CategoryId" class="text-secondary p-0 ms-2"></label>
+                            <select asp-for="Product.CategoryId" asp-items="@Model.CategoryList" class="form-select border-0 shadow">
+                                <option disabled selected>--SELECT CATEGORY--</option>
+                            </select>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                        </div>
+                        <div class="py-2 col-12 form-floating">
+                            <label asp-for="Product.ImageUrl" class="text-secondary p-0 ms-2"></label>
+                            <input type="file" name="file" class="form-control border-0 shadow" />
+                        </div>
+
+                        <div class="row pt-3">
+                            <div class="col-6 col-md-3">
+                                @if (@Model.Product.Id == 0)
+                                {
+                                    <button type="submit" class="btn btn-warning text-dark form-control" style="border-radius:5px"> Create</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-warning text-dark form-control" style="border-radius:5px"> Update</button>
+                                }
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <a asp-controller="Product" asp-action="Index"
+                                   style="border-radius:5px" class="btn btn-primary text-warning form-control">
+                                    Back To List
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <img src="@Model.Product.ImageUrl" width="100%"
+                         style="border-radius:5px; border:1px solid #bbb9b9"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+      tinymce.init({
+        selector: 'textarea',
+        plugins: 'anchor autolink charmap codesample emoticons lists table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        tinycomments_mode: 'embedded',
+        menubar: false
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial"/>
+}
