@@ -33,8 +33,8 @@
                             <a class="nav-link text-warning" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         
-                        @if (User.IsInRole(Constants.Role_Admin))
-                        {
+                        @* @if (User.IsInRole(Constants.Role_Admin))
+                        { *@
 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-warning" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,11 +46,20 @@
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li class="nav-item">
+                                    <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="nav-item">
                                     <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
                                 </li>
                             </ul>
                             </li>
-                        }
+                        @* } *@
+                        <li class="nav-item">
+                            <a class="nav-link text-warning" asp-area="Customer" asp-controller="Cart" asp-action="Index">
+                                <i class="bi bi-cart"></i>
+                            </a>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial"/>
                 </div>

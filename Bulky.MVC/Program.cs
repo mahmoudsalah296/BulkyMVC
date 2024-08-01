@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 builder
-    .Services.AddIdentity<ApplicationUser, IdentityRole>(o =>
+    .Services.AddIdentity<IdentityUser, IdentityRole>(o =>
     {
         o.Password.RequireNonAlphanumeric = false;
     })

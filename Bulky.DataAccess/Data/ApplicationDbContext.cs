@@ -13,6 +13,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -126,6 +128,38 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
                     Price50 = 22,
                     Price100 = 20,
                     CategoryId = 2
+                }
+            );
+
+        modelBuilder
+            .Entity<Company>()
+            .HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "Readers Club",
+                    StreetAddress = "999 Main st",
+                    City = "Lala land",
+                    State = "NY",
+                    PhoneNumber = "36741689"
+                },
+                new Company
+                {
+                    Id = 2,
+                    Name = "Tech Club",
+                    StreetAddress = "123 tech st",
+                    City = "tech city",
+                    State = "Kfs",
+                    PhoneNumber = "11438596"
+                },
+                new Company
+                {
+                    Id = 3,
+                    Name = "Vivid Club",
+                    StreetAddress = "785 viv st",
+                    City = "Vid land",
+                    State = "Lil",
+                    PhoneNumber = "154697821"
                 }
             );
     }

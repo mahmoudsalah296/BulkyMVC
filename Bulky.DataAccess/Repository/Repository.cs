@@ -15,9 +15,14 @@ namespace Bulky.DataAccess.Repository
             Dbset = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll(string? include = null)
+        public IEnumerable<T> GetAll(
+            Expression<Func<T, bool>>? filter = null,
+            string? include = null
+        )
         {
             IQueryable<T> query = Dbset;
+            if (filter != null)
+                query = query.Where(filter);
             if (!string.IsNullOrEmpty(include))
             {
                 foreach (
