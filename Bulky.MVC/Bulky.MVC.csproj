@@ -7,6 +7,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Areas\Admin\Controllers\CategoryController.cs" />
+    <Content Include="Areas\Admin\Controllers\CompanyController.cs" />
+    <Content Include="Areas\Admin\Controllers\OrderController.cs" />
+    <Content Include="Areas\Admin\Controllers\ProductController.cs" />
+    <Content Include="Areas\Customer\Controllers\CartController.cs" />
+    <Content Include="Areas\Customer\Controllers\HomeController.cs" />
+    <Content Include="Areas\Identity\Pages\Account\AccessDenied.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ConfirmEmail.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ConfirmEmailChange.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ExternalLogin.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ForgotPassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ForgotPasswordConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Lockout.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Login.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\LoginWith2fa.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\LoginWithRecoveryCode.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Logout.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ChangePassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\DeletePersonalData.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\Disable2fa.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\DownloadPersonalData.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\Email.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\EnableAuthenticator.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ExternalLogins.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\GenerateRecoveryCodes.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\Index.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ManageNavPages.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\PersonalData.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ResetAuthenticator.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\SetPassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Manage\TwoFactorAuthentication.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\Register.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\RegisterConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ResendEmailConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ResetPassword.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Account\ResetPasswordConfirmation.cshtml.cs" />
+    <Content Include="Areas\Identity\Pages\Error.cshtml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />

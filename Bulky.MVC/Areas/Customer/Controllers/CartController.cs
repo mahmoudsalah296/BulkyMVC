@@ -216,7 +216,6 @@ public class CartController : Controller
             nameof(OrderConfirmation),
             new { id = ShoppingCartVM.OrderHeader.Id }
         );
-        ;
     }
 
     public IActionResult OrderConfirmation(int id)
