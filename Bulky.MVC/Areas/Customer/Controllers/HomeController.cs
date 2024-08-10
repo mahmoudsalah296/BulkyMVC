@@ -2,7 +2,9 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bulky.MVC.Areas.Customer.Controllers;
@@ -55,6 +57,13 @@ public class HomeController : Controller
         if (cartFromDb == null)
         {
             _unitOfWork.ShoppingCartRepository.Add(cart);
+            _unitOfWork.Save();
+            HttpContext.Session.SetInt32(
+                Constants.SessionCart,
+                _unitOfWork
+                    .ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId)!
+                    .Count()
+            );
         }
         else
         {

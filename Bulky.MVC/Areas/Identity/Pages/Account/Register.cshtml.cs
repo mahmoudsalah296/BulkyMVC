@@ -89,11 +89,11 @@ namespace Bulky.MVC.Areas.Identity.Pages.Account
 
             [Required]
             public string Name { get; set; }
-            public string? StreetAddress { get; set; }
-            public string? City { get; set; }
-            public string? State { get; set; }
-            public string? PostalCode { get; set; }
-            public string? PhoneNumber { get; set; }
+            public string StreetAddress { get; set; }
+            public string City { get; set; }
+            public string State { get; set; }
+            public string PostalCode { get; set; }
+            public string PhoneNumber { get; set; }
 
             public int? CompanyId { get; set; }
 
@@ -103,14 +103,6 @@ namespace Bulky.MVC.Areas.Identity.Pages.Account
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            if (!await _roleManager.RoleExistsAsync(Constants.Role_Admin))
-            {
-                await _roleManager.CreateAsync(new IdentityRole(Constants.Role_Admin));
-                await _roleManager.CreateAsync(new IdentityRole(Constants.Role_Company));
-                await _roleManager.CreateAsync(new IdentityRole(Constants.Role_Customer));
-                await _roleManager.CreateAsync(new IdentityRole(Constants.Role_Employee));
-            }
-
             Input = new InputModel
             {
                 RoleList = _roleManager
@@ -192,7 +184,11 @@ namespace Bulky.MVC.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (User.IsInRole(Constants.Role_Admin))
+                            TempData["success"] = "User created successfully";
+                        else
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+
                         return LocalRedirect(returnUrl);
                     }
                 }

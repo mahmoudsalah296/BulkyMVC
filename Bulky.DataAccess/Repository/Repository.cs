@@ -36,9 +36,13 @@ namespace Bulky.DataAccess.Repository
             return query.ToList();
         }
 
-        public T? GetOne(Expression<Func<T, bool>> filter, string? include = null)
+        public T? GetOne(
+            Expression<Func<T, bool>> filter,
+            string? include = null,
+            bool tracked = false
+        )
         {
-            IQueryable<T> query = Dbset;
+            IQueryable<T> query = tracked ? Dbset : Dbset.AsNoTracking();
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(include))
             {
