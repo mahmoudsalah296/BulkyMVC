@@ -58,6 +58,10 @@
                                     <li class="nav-item">
                                         <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Register">Create User</a>
                                     </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item text-dark" asp-area="Admin" asp-controller="User" asp-action="Index">User Management</a>
+                                    </li>
                                 </ul>
                             </li>
                         }
@@ -91,6 +95,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js" asp-append-version="true"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

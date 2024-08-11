@@ -9,12 +9,12 @@ namespace Bulky.DataAccess.DbInitializer;
 public class DbInitializer : IDbInitializer
 {
     private readonly ApplicationDbContext _context;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public DbInitializer(
         ApplicationDbContext context,
-        UserManager<ApplicationUser> userManager,
+        UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager
     )
     {

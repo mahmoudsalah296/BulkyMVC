@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
@@ -18,4 +19,7 @@ public class ApplicationUser : IdentityUser
 
     [ValidateNever]
     public Company? Company { get; set; }
+
+    [NotMapped]
+    public string Role { get; set; }
 }

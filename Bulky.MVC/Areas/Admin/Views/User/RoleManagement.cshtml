@@ -1,0 +1,57 @@
+﻿@model UserVM
+
+
+
+<div class="card shadow border-0 mt-4 mb-5">
+    <div class="card-header bg-secondary bg-gradient text-light py-4 text-center">
+        Manage User Role
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <input asp-for="User.Id" hidden/> 
+            <div class="row">
+                <div class="form-floating mb-3 col-md-12">
+                    
+                    <input asp-for="User.Name" class="form-control" readonly autocomplete="username" aria-required="true" />
+                    <label asp-for="User.Name" class="ms-2 form-floating"></label>
+                </div>
+                <div class=" mb-3 col-md-12">
+                    <select asp-for="User.Role" asp-items="@Model.RolesList" class="form-select">
+                    </select>
+                </div>
+                <div class=" mb-3 col-md-12">
+                    <select asp-for="User.CompanyId" style="display: none" asp-items="@Model.CompanyList" class="form-select">
+                    </select>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-md-3 col-6">
+                        <button type="submit" class="btn btn-primary form-control">Save</button>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <button asp-action="index" type="submit" class="btn btn-outline-primary form-control">Back To List</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+            $('#User_Role').change(function () {
+                var selection = $('#User_Role Option:Selected').text()
+                if (selection == 'Company') {
+                    $('#User_CompanyId').show();
+                }
+                else {
+                    $('#User_CompanyId').hide();
+                }
+            })
+        })
+    </script>
+}

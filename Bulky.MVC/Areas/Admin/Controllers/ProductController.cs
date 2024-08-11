@@ -39,14 +39,17 @@ public class ProductController : Controller
         ProductVM productVm = new() { CategoryList = categories, Product = new Product() };
         if (id is null or 0)
             return View(productVm);
-        productVm.Product = _unitOfWork.ProductRepository.GetOne(p => p.Id == id);
+        productVm.Product = _unitOfWork.ProductRepository.GetOne(
+            p => p.Id == id,
+            include: "ProductImages"
+        )!;
         if (productVm.Product == null)
             return NotFound();
         return View(productVm);
     }
 
     [HttpPost]
-    public IActionResult Upsert(ProductVM productVm, IFormFile? file)
+    public IActionResult Upsert(ProductVM productVm, List<IFormFile>? files)
     {
         if (!ModelState.IsValid)
         {
@@ -58,44 +61,81 @@ public class ProductController : Controller
             return View(productVm);
         }
 
-        string wwwRootPath = _webHostEnvironment.WebRootPath;
-        if (file is not null)
-        {
-            // change file name
-            string filename = Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName);
-            // get the path in which file will be saved
-            string productPath = Path.Combine(wwwRootPath, "images", "products");
-            // when updating if user upload an image remove old image
-            if (!string.IsNullOrEmpty(productVm.Product.ImageUrl))
-            {
-                var oldImagePath = Path.Combine(
-                    wwwRootPath,
-                    productVm.Product.ImageUrl.TrimStart('\\')
-                );
-                if (System.IO.File.Exists(oldImagePath))
-                    System.IO.File.Delete(oldImagePath);
-            }
-            // saving the image
-            using (
-                var filestream = new FileStream(
-                    Path.Combine(productPath, filename),
-                    FileMode.Create
-                )
-            )
-            {
-                file.CopyTo(filestream);
-            }
-
-            productVm.Product.ImageUrl = @"\images\products\" + filename;
-        }
-
         if (productVm.Product.Id == 0)
             _unitOfWork.ProductRepository.Add(productVm.Product);
         else
             _unitOfWork.ProductRepository.Update(productVm.Product);
 
         _unitOfWork.Save();
-        TempData["success"] = "Product added successfully";
+
+        string wwwRootPath = _webHostEnvironment.WebRootPath;
+        if (files is not null)
+        {
+            foreach (IFormFile file in files)
+            {
+                // change file name
+                string filename = Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName);
+
+                string productPath = @"images\products\product-" + productVm.Product.Id;
+                // get the path in which file will be saved
+                string finalPath = Path.Combine(wwwRootPath, productPath);
+
+                if (!Directory.Exists(finalPath))
+                {
+                    Directory.CreateDirectory(finalPath);
+                }
+
+                using (
+                    var filestream = new FileStream(
+                        Path.Combine(finalPath, filename),
+                        FileMode.Create
+                    )
+                )
+                {
+                    file.CopyTo(filestream);
+                }
+
+                ProductImage productImage =
+                    new()
+                    {
+                        ImageUrl = $@"\{productPath}\{filename}",
+                        ProductId = productVm.Product.Id
+                    };
+
+                if (productVm.Product.ProductImages == null)
+                    productVm.Product.ProductImages = new List<ProductImage>();
+
+                productVm.Product.ProductImages.Add(productImage);
+            }
+
+            _unitOfWork.ProductRepository.Update(productVm.Product);
+            _unitOfWork.Save();
+
+            // when updating if user upload an image remove old image
+            //if (!string.IsNullOrEmpty(productVm.Product.ImageUrl))
+            //{
+            //    var oldImagePath = Path.Combine(
+            //        wwwRootPath,
+            //        productVm.Product.ImageUrl.TrimStart('\\')
+            //    );
+            //    if (System.IO.File.Exists(oldImagePath))
+            //        System.IO.File.Delete(oldImagePath);
+            //}
+            //// saving the image
+            //using (
+            //    var filestream = new FileStream(
+            //        Path.Combine(productPath, filename),
+            //        FileMode.Create
+            //    )
+            //)
+            //{
+            //    file.CopyTo(filestream);
+            //}
+
+            //productVm.Product.ImageUrl = @"\images\products\" + filename;
+        }
+
+        TempData["success"] = "Product added/updated successfully";
         return RedirectToAction("Index");
     }
 
@@ -152,6 +192,26 @@ public class ProductController : Controller
     //    return RedirectToAction("Index");
     //}
 
+    public IActionResult DeleteImage(int imageId)
+    {
+        var img = _unitOfWork.ProductImageRepository.GetOne(i => i.Id == imageId);
+
+        if (!string.IsNullOrEmpty(img!.ImageUrl))
+        {
+            var oldImagePath = Path.Combine(
+                _webHostEnvironment.WebRootPath,
+                img.ImageUrl?.TrimStart('\\') ?? string.Empty
+            );
+            if (System.IO.File.Exists(oldImagePath))
+                System.IO.File.Delete(oldImagePath);
+        }
+        _unitOfWork.ProductImageRepository.Remove(img);
+        _unitOfWork.Save();
+        TempData["success"] = "Deleted Successfully";
+
+        return RedirectToAction(nameof(Upsert), new { Id = img.ProductId });
+    }
+
     #region API CALLS
     [HttpGet]
     public IActionResult GetAll()
@@ -166,12 +226,12 @@ public class ProductController : Controller
         var product = _unitOfWork.ProductRepository.GetOne(c => c.Id == id);
         if (product is null)
             return NotFound("No product with this ID");
-        var oldImagePath = Path.Combine(
-            _webHostEnvironment.WebRootPath,
-            product.ImageUrl?.TrimStart('\\') ?? string.Empty
-        );
-        if (System.IO.File.Exists(oldImagePath))
-            System.IO.File.Delete(oldImagePath);
+        //var oldImagePath = Path.Combine(
+        //    _webHostEnvironment.WebRootPath,
+        //    product.ImageUrl?.TrimStart('\\') ?? string.Empty
+        //);
+        //if (System.IO.File.Exists(oldImagePath))
+        //    System.IO.File.Delete(oldImagePath);
         _unitOfWork.ProductRepository.Remove(product);
         _unitOfWork.Save();
 

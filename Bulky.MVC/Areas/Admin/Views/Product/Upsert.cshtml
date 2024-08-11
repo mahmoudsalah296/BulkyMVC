@@ -10,11 +10,11 @@
     </div>
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
-            <input hidden asp-for="Product.Id"/>
-            <input hidden asp-for="Product.ImageUrl"/>
+            <input hidden asp-for="Product.Id" />
+            @* <input hidden asp-for="Product.ImageUrl"/> *@
 
             <div class="row">
-                <div class="col-10">
+                <div class="col-9 col-md-10">
                     <div class="p-3">
                         <div class="py-2 col-12 form-floating">
                             <label asp-for="Product.Title" class="text-secondary p-0 ms-2"></label>
@@ -63,8 +63,8 @@
                             <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                         </div>
                         <div class="py-2 col-12 form-floating">
-                            <label asp-for="Product.ImageUrl" class="text-secondary p-0 ms-2"></label>
-                            <input type="file" name="file" class="form-control border-0 shadow" />
+                            <label asp-for="Product.ProductImages" class="text-secondary p-0 ms-2"></label>
+                            <input type="file" name="files" class="form-control border-0 shadow" multiple />
                         </div>
 
                         <div class="row pt-3">
@@ -87,9 +87,21 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2">
-                    <img src="@Model.Product.ImageUrl" width="100%"
-                         style="border-radius:5px; border:1px solid #bbb9b9"/>
+                <div class="col-3 col-md-2">
+                    @if (Model.Product.ProductImages != null)
+                    {
+                        @foreach (var image in Model.Product.ProductImages)
+                        {
+                            <div class="border p-1 m-2 text-center">
+                                <img src="@image.ImageUrl" width="100%"
+                                     style="border-radius:5px; border:1px solid #bbb9b9" />
+                                <a asp-action="DeleteImage" asp-route-imageId="@image.Id"
+                                    class="btn btn-danger" style="width:100%">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
         </form>
@@ -100,13 +112,13 @@
 @section Scripts
 {
     <script>
-      tinymce.init({
-        selector: 'textarea',
-        plugins: 'anchor autolink charmap codesample emoticons lists table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-        toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-        tinycomments_mode: 'embedded',
-        menubar: false
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons lists table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            menubar: false
         });
     </script>
-    <partial name="_ValidationScriptsPartial"/>
+    <partial name="_ValidationScriptsPartial" />
 }

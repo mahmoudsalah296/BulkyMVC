@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Bulky.Models;
 
@@ -44,5 +44,7 @@ public class Product
     [ValidateNever]
     public Category Category { get; set; }
 
-    public string? ImageUrl { get; set; }
+    //public string? ImageUrl { get; set; }
+    [ValidateNever]
+    public List<ProductImage>? ProductImages { get; set; }
 }

@@ -50,10 +50,10 @@ builder
         o.AppSecret = "b5ebd3817171aa3e7006de5e0d300812";
     });
 
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 var app = builder.Build();
 
