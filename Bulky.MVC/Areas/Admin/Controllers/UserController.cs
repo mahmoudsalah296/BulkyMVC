@@ -57,10 +57,10 @@ public class UserController : Controller
     {
         var roleId = _context.UserRoles.FirstOrDefault(u => u.UserId == userVM.User.Id)!.RoleId!;
         var oldRole = _context.Roles.FirstOrDefault(u => u.Id == roleId)!.Name;
+        var user = _context.ApplicationUsers.FirstOrDefault(u => u.Id == userVM.User.Id);
+
         if (userVM.User.Role != oldRole)
         {
-            var user = _context.ApplicationUsers.FirstOrDefault(u => u.Id == userVM.User.Id);
-
             if (userVM.User.Role == Constants.Role_Company)
                 user.CompanyId = userVM.User.CompanyId;
 
@@ -72,6 +72,12 @@ public class UserController : Controller
             userManager.RemoveFromRoleAsync(user, oldRole).GetAwaiter().GetResult();
             userManager.AddToRoleAsync(user, userVM.User.Role).GetAwaiter().GetResult();
         }
+        else if (oldRole == Constants.Role_Company && userVM.User.CompanyId != user.CompanyId)
+        {
+            user.CompanyId = userVM.User.CompanyId;
+            _context.ApplicationUsers.Update(user);
+            _context.SaveChanges();
+        }
         TempData["success"] = "User updated successfully";
         return RedirectToAction("index");
     }
@@ -81,14 +87,10 @@ public class UserController : Controller
     public IActionResult GetAll()
     {
         var users = _context.ApplicationUsers.Include(u => u.Company).ToList();
-        var userRole = _context.UserRoles.ToList();
-        var roles = _context.Roles.ToList();
+
         foreach (var user in users)
         {
-            if (user.Id == "7d7eecde-76cf-4d38-b6af-3a4eb7a4ff2b")
-                continue;
-            var roleId = userRole.FirstOrDefault(u => u.UserId == user.Id).RoleId;
-            user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+            user.Role = userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
 
             if (user.Company == null)
                 user.Company = new() { Name = "" };

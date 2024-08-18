@@ -23,7 +23,9 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        IEnumerable<Product> products = _unitOfWork.ProductRepository.GetAll(include: "Category");
+        IEnumerable<Product> products = _unitOfWork.ProductRepository.GetAll(
+            include: "Category,ProductImages"
+        );
         return View(products);
     }
 
@@ -32,7 +34,7 @@ public class HomeController : Controller
         var shoppingCart = new ShoppingCart();
         shoppingCart.Product = _unitOfWork.ProductRepository.GetOne(
             u => u.Id == productId,
-            include: "Category"
+            include: "Category,ProductImages"
         )!;
         shoppingCart.Count = 1;
         shoppingCart.ProductId = productId;

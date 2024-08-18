@@ -232,6 +232,19 @@ public class ProductController : Controller
         //);
         //if (System.IO.File.Exists(oldImagePath))
         //    System.IO.File.Delete(oldImagePath);
+
+        string productPath = @"images\products\product-" + id;
+        string finalPath = Path.Combine(_webHostEnvironment.WebRootPath, productPath);
+
+        if (Directory.Exists(finalPath))
+        {
+            var files = Directory.GetFiles(finalPath);
+            foreach (var file in files)
+            {
+                System.IO.File.Delete(file);
+            }
+            Directory.Delete(finalPath);
+        }
         _unitOfWork.ProductRepository.Remove(product);
         _unitOfWork.Save();
 
